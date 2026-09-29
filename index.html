@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook inside Telegram</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h2>Facebook Inside Telegram</h2>
+    <p>Remote browser test</p>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+  </script>
+</body>
+</html>

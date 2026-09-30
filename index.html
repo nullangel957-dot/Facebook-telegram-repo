@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Facebook inside Telegram</title>
+  <title>Facebook Inside Telegram</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -12,40 +12,74 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #fff;
-      font-family: Arial, sans-serif;
+      overflow: hidden;
+      background: #000;
     }
 
-    #app {
+    #browser {
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      border: 0;
     }
 
-    h2 {
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: #666;
+    #status {
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 40px;
     }
   </style>
 </head>
 
 <body>
-  <div id="app">
-    <h2>Facebook Inside Telegram</h2>
-    <p>Remote browser test</p>
-  </div>
+
+  <div id="status">Starting remote browser...</div>
+
+  <iframe
+    id="browser"
+    style="display:none;"
+    allow="clipboard-read; clipboard-write"
+  ></iframe>
 
   <script>
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
+
+    const WORKER_URL =
+      "https://telegram-facebook-browser.null-angel957.workers.dev";
+
+    async function startBrowser() {
+      try {
+        const response = await fetch(WORKER_URL);
+
+        if (!response.ok) {
+          throw new Error("Worker returned " + response.status);
+        }
+
+        const session = await response.json();
+
+        if (!session.debugUrl) {
+          throw new Error("No debugUrl returned by Steel");
+        }
+
+        const browser = document.getElementById("browser");
+
+        browser.src = session.debugUrl + "?interactive=true";
+        browser.style.display = "block";
+
+        document.getElementById("status").style.display = "none";
+
+      } catch (error) {
+        document.getElementById("status").textContent =
+          "Could not start remote browser.";
+        console.error(error);
+      }
+    }
+
+    startBrowser();
   </script>
+
 </body>
 </html>
